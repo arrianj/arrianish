@@ -1,8 +1,8 @@
 #################
-#   CONTSANTS
+#   CONSTANTS
 #################
 
-DIGITS = '0123456789'
+digits = '0123456789'
 
 #################
 #     ERRORS
@@ -74,7 +74,7 @@ class Token:
         return f'{self.type}'
 
 #################
-#    LEXER
+#     LEXER
 #################
 
 class Lexer:
@@ -95,7 +95,7 @@ class Lexer:
         while self.current_char != None:
             if self.current_char in ' \t':
                 self.advance()
-            elif self.current_char in DIGITS:
+            elif self.current_char in digits:
                 tokens.append(self.make_number())
             elif self.current_char == '+':
                 tokens.append(Token(tt_plus))
@@ -127,7 +127,7 @@ class Lexer:
         num_str = ''
         dot_count = 0
 
-        while self.current_char != None and self.current_char in DIGITS + '.':
+        while self.current_char != None and self.current_char in digits + '.':
             if self.current_char == '.':
                 if dot_count == 1: break
                 dot_count += 1
@@ -142,7 +142,7 @@ class Lexer:
             return Token(tt_float, float(num_str))
 
 #################
-#     RUN
+#      RUN
 #################
 
 def run(fn, text):
