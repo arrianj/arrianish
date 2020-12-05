@@ -1,1 +1,65 @@
-.vscode/settings.json
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Vim
+######################
+.*.swp
+tags
+
+# Python
+######################
+.ipynb_checkpoints
+__pycache__
+*.egg-info
+*.pkl
+*.npy
+.cache
+.hypothesis
+Scratch.ipynb
+Untitled*.ipynb
+.mypy_cache
+
+# Environments
+######################
+.env
+.vscode
+.envrc
+.direnv
+venv
+env-local
+zappa_settings.json
