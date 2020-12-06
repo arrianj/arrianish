@@ -182,7 +182,6 @@ class UnaryOpNode:
     def __repr__(self):
         return f'({self.op_tok}, {self.node})'
 
-
 class BinOpNode:
     # handles binary operations (addition, subtraction, multiplication, and division)
     def __init__(self, left_node, op_tok, right_node):
@@ -207,7 +206,6 @@ class ParseResult:
         if isinstance(res, ParseResult):
             if res.error: self.error = res.error
             return res.node
-        
         return res
 
     def success(self, node):
@@ -256,13 +254,11 @@ class Parser:
             if res.error: return res
             return res.success(UnaryOpNode(tok, factor))
 
-
         elif tok.type in (tt_int, tt_float):
             res.register(self.advance())
             return res.success(NumberNode(tok))
 
         elif tok.type == tt_lparen:
-
             res.register(self.advance())
             expr = res.register(self.expr())
             if res.error: return res
@@ -274,8 +270,6 @@ class Parser:
                     self.current_tok.pos_start, self.current_tok.pos_end,
                     "Expected ')'"
                 ))
-
-
 
         return res.failure(InvalidSyntaxError(
             tok.pos_start, tok.pos_end, 
