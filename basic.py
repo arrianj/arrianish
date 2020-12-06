@@ -55,7 +55,7 @@ class RTError(Error):
             pos = ctx.parent_entry_pos
             ctx = ctx.parent
 
-        return 'Traceback (most recent call last:\n' + result
+        return 'Traceback (most recent call last):\n' + result
 
 #################
 #    POSITION
@@ -244,7 +244,6 @@ class ParseResult:
     def failure(self, error):
         self.error = error
         return self
-
 
 #################
 #    PARSER
