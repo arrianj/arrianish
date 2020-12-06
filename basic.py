@@ -34,6 +34,10 @@ class InvalidSyntaxError(Error):
     def __init__(self, pos_start, pos_end, details=''):
         super().__init__(pos_start, pos_end, 'Invalid Syntax', details)
 
+class RTError(Error):
+    def __init__(self, pos_start, pos_end, details=''):
+        super().__init__(pos_start, pos_end, 'Runtime Error', details)
+
 #################
 #    POSITION
 #################
@@ -305,6 +309,27 @@ class Parser:
         return res.success(left)
 
 #################
+# RUNTIME RESULT
+#################
+
+class RTResult:
+    def __init__(self):
+        self.value = None
+        self.error = None
+    
+    def register(self, res):
+        if res.error: self.error = res.error
+        return res.value
+
+    def success(self, value):
+        self.value = value
+        return self
+
+    def failure(self, error):
+        self.error = error
+        return self
+
+#################
 #    VALUES
 #################
 
@@ -321,19 +346,24 @@ class Number:
 
     def added_to(self, other):
         if isinstance(other, Number):
-            return Number(self.value + other.value)
+            return Number(self.value + other.value), None
 
     def subtracted_by(self, other):
         if isinstance(other, Number):
-            return Number(self.value - other.value)
+            return Number(self.value - other.value), None
 
     def multiplied_by(self, other):
         if isinstance(other, Number):
-            return Number(self.value * other.value)
+            return Number(self.value * other.value), None
 
     def divided_by(self, other):
         if isinstance(other, Number):
-            return Number(self.value / other.value)
+            if other.value == 0:
+                return None, RTError(
+                    other.pos_start, other.pos_end,
+                    'Division by zero'
+                )
+            return Number(self.value / other.value), None
 
     def __repr__(self):
         return str(self.value)
@@ -355,30 +385,44 @@ class Interpreter:
 
     #################
     def visit_NumberNode(self, node):
-        return Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
-
+        return RTResult().success(
+        Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        )
     def visit_BinOpNode(self, node):
-        left = self.visit(node.left_node)
-        right = self.visit(node.right_node)
+        res = RTResult()
+        left = res.register(self.visit(node.left_node))
+        if res.error: return res
+        right = res.register(self.visit(node.right_node))
+        if res.error: return res
 
         if node.op_tok.type == tt_plus:
-            result = left.added_to(right)
+            result, error = left.added_to(right)
         if node.op_tok.type == tt_minus:
-            result = left.subtracted_by(right)
+            result, error = left.subtracted_by(right)
         if node.op_tok.type == tt_mul:
-            result = left.multiplied_by(right)
+            result, error = left.multiplied_by(right)
         if node.op_tok.type == tt_div:
-            result = left.divided_by(right)
+            result, error = left.divided_by(right)
 
-        return result.set_pos(node.pos_start, node.pos_end)
+        if error:
+            return res.failure(error)
+        else:
+            return res.success(result.set_pos(node.pos_start, node.pos_end))
 
     def visit_UnaryOpNode(self, node):
-        number = self.visit(node.node)
+        res = RTResult()
+        number = res.register(self.visit(node.node))
+        if res.error: return res
+
+        error = None
 
         if node.op_tok.type == tt_minus:
-            number = number.multiplied_by(Number(-1))
+            number, error = number.multiplied_by(Number(-1))
 
-        return number.set_pos(node.pos_start, node.pos_end)
+        if error:
+            return res.failure(error)
+        else:
+            return res.success(number.set_pos(node.pos_start, node.pos_end))
     #################
         
 #################
@@ -401,4 +445,4 @@ def run(fn, text):
     interpreter = Interpreter()
     result = interpreter.visit(ast.node)
 
-    return result, None
+    return result.value, result.error
