@@ -1,0 +1,7 @@
+expr    : term ((plus|minus) term)*
+
+term    : factor ((mul|div) factor)*
+
+factor  : int|float
+        : (plus|minus) factor
+        : lparen expr rparen
