@@ -96,6 +96,7 @@ tt_mul = 'mul'
 tt_div = 'div'
 tt_lparen = 'lparen'
 tt_rparen = 'rparen'
+tt_pow = 'pow'
 tt_eof = 'eof'
 
 class Token:
@@ -157,6 +158,9 @@ class Lexer:
                 self.advance()
             elif self.current_char == ')':
                 tokens.append(Token(tt_rparen, pos_start = self.pos))
+                self.advance()
+            elif self.current_char == '^':
+                tokens.append(Token(tt_pow, pos_start = self.pos))
                 self.advance()
             else:
                 pos_start = self.pos.copy()
@@ -266,7 +270,7 @@ class Parser:
         if not res.error and self.current_tok.type!= tt_eof:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Expected '+', '-', '*', or '/'"
+                "Expected '+', '-', '*', '/', or '^'"
                 ))
         return res
 
@@ -304,7 +308,7 @@ class Parser:
             ))
 
     def term(self):
-        return self.bin_op(self.factor, (tt_mul, tt_div))
+        return self.bin_op(self.factor, (tt_mul, tt_div, tt_pow))
 
     def expr(self):
         return self.bin_op(self.term, (tt_plus, tt_minus))
@@ -387,6 +391,10 @@ class Number:
                 )
             return Number(self.value / other.value).set_context(self.context), None
 
+    def power_of(self, other):
+        if isinstance(other, Number):
+            return Number(self.value ** other.value).set_context(self.context), None
+
     def __repr__(self):
         return str(self.value)
 
@@ -435,6 +443,8 @@ class Interpreter:
             result, error = left.multiplied_by(right)
         if node.op_tok.type == tt_div:
             result, error = left.divided_by(right)
+        if node.op_tok.type == tt_pow:
+            result, error = left.power_of(right)
 
         if error:
             return res.failure(error)
