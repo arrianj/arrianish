@@ -2,6 +2,10 @@ expr    : term ((plus|minus) term)*
 
 term    : factor ((mul|div) factor)*
 
-factor  : int|float
-        : (plus|minus) factor
+factor  : (plus|minus) factor
+        : power
+
+power   : atom (pow factor)*
+
+atom    : int|float
         : lparen expr rparen
