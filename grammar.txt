@@ -1,4 +1,7 @@
-expr    : term ((plus|minus) term)*
+# lower priority on top, higher priority expression on bottom
+
+expr    : keywords:var identifier eq expr
+        : term ((plus|minus) term)*
 
 term    : factor ((mul|div) factor)*
 
@@ -7,5 +10,5 @@ factor  : (plus|minus) factor
 
 power   : atom (pow factor)*
 
-atom    : int|float
+atom    : int|float|identifier
         : lparen expr rparen
