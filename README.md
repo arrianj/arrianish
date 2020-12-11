@@ -36,10 +36,13 @@ arrianish supports unary and binary mathematical operations, including the eleme
 ```
 $ arrianish > -5
 -5
+
 $ arrianish > 1 + 2
 3
+
 $ arrianish > 5^5
 3125
+
 $ arrianish > (9*2)/5
 3.6
 ```
