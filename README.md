@@ -66,7 +66,7 @@ $ arrianish > var a = var b = var c = 10
 10
 ```
 
-Comparison operators, logical operators, and booleans are supported in arrianish. Boolean values for true and false are set to the values 1, and 0, respectfully.
+Comparison operators, logical operators, and booleans are supported in arrianish. Boolean values for true and false are set to the values 1 and 0, respectively.
 
 ```
 $ arrianish > true
@@ -150,6 +150,17 @@ File <stdin>, line 1
 
 a 6
   ^
+```
+Undefined variable handling:
+
+```
+$ arrianish > abc
+Traceback (most recent call last):
+    File <stdin>, line 1, in <program>
+Runtime Error: 'abc' is not defined
+
+abc
+^^^
 ```
 
 ## Contributing
