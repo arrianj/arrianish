@@ -17,3 +17,7 @@ power           : atom (pow factor)*
 
 atom            : int|float|identifier
                 : lparen expr rparen
+
+if-expr         : keyword:if expr keyword:then expr
+                 (keyword:elif expr keyword:then expr)*
+                 (keyword:else expr)?
