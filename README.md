@@ -61,6 +61,60 @@ $ arrianish > var a = var b = var c = 10
 10
 ```
 
+Comparison operators, logical operators, and booleans are supported in arrianish. Boolean values for true and false are set to the values 1, and 0, respectfully.
+
+```
+$ arrianish > true
+1
+$ arrianish > false
+0
+```
+Comparison operators:
+
+- greater than (>)
+- greater than or equal to (>=)
+- less than (<)
+- less than or equal to (<=)
+- equal to (==)
+- not equal to (!=)
+
+```
+$ arrianish > 1 > 2
+0
+$ arrianish > 1 >= 2
+0
+$ arrianish > 1 < 2
+1
+$ arrianish > 1 <= 2
+1
+$ arrianish > 1 == 2
+0
+$ arrianish > 1 != 2
+1
+```
+
+
+Logical operators:
+
+- and 
+- or
+- not
+
+```
+$ arrianish > 1 == 1 and 2 == 4
+0
+
+$ arrianish > 1 == 1 or 2 == 3
+1
+
+$ arrianish > var a = 1
+1
+$ arrianish > not a < 0 and a < 10
+1
+$ arrianish > not a < 5 and a < 10
+0
+```
+
 ## Exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
