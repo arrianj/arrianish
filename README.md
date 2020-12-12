@@ -15,18 +15,23 @@ Once the AST is built, the interpreter will visit each node in a top-down, left-
 Operator precedence is present in arrianish, all expressions follow the order of operations.
 
 ```
-expr    : keywords:var identifier eq expr
-        : term ((plus|minus) term)*
+expr            : keywords:var identifier eq expr
+                : comp-expr ((keyword: and|keyword: or) comp-expr)*
 
-term    : factor ((mul|div) factor)*
+comp-expr       : not comp-expr
+                : arith-expr ((ee|lt|gt|lte|gte) arith-expr)*
 
-factor  : (plus|minus) factor
-        : power
+arith-expr      : term ((plus|minus) term)*
 
-power   : atom (pow factor)*
+term            : factor ((mul|div) factor)*
 
-atom    : int|float|identifier
-        : lparen expr rparen
+factor          : (plus|minus) factor
+                : power
+
+power           : atom (pow factor)*
+
+atom            : int|float|identifier
+                : lparen expr rparen
 ```
 
 ## Usage
