@@ -124,7 +124,7 @@ $ arrianish > not a < 5 and a < 10
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
 
-In the event of a runtime error, the compiler will display run a traceback function to display context, and highlight the characters that raised the exception.
+In the event of a runtime error, the compiler will run a traceback function to display context and highlight the characters that raised the exception.
 
 Division by zero runtime error handling:
 
