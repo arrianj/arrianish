@@ -1,5 +1,7 @@
 # lower priority on top, higher priority expression on bottom
 
+# make a glossary for this (expr, (), ?, *, |)
+
 expr            : keywords:var identifier eq expr
                 : comp-expr ((keyword: and|keyword: or) comp-expr)*
 
@@ -21,3 +23,8 @@ atom            : int|float|identifier
 if-expr         : keyword:if expr keyword:then expr
                  (keyword:elif expr keyword:then expr)*
                  (keyword:else expr)?
+
+for-expr        : keyword:for identifier eq expr keyword:to expr
+                 (keyword: step expr)? keyword:then expr
+
+while-expr      : keyword:while expr keyword:then expr

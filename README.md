@@ -36,6 +36,11 @@ atom            : int|float|identifier
 if-expr         : keyword:if expr keyword:then expr
                  (keyword:elif expr keyword:then expr)*
                  (keyword:else expr)?
+
+for-expr        : keyword:for identifier eq expr keyword:to expr
+                 (keyword: step expr)? keyword:then expr
+
+while-expr      : keyword:while expr keyword:then expr
 ```
 
 ## arithmetic 
@@ -137,8 +142,18 @@ $ arrianish > var bar = if foo >= 5 then 8 else 12
 8
 $ arrianish > bar
 8
+```
+
+For loops in arrianish allow for a start value, end value, and step size value between those points to be defined, as shown here: 
 
 ```
+$ arrianish > var result = 5
+5
+$ arrianish > for i = 5 to 0 step -1 then var result = result * i
+$ arrianish > result
+600
+```
+While loops are currently supported, but as there is no print function, the output is not currently any way for me to show an example in the command line. I will update this in the readme when a print feature is supported
 
 ## exception handling
 
