@@ -155,6 +155,37 @@ $ arrianish > result
 ```
 While loops are currently supported, but as there is no print function, the output is not currently any way for me to show an example in the command line. I will update this in the readme when a print feature is supported
 
+## functions
+
+Functions in arrianish are defined with the 'fun' keyword, which is a good reminder of how little fun I had when debugging the functionality. 
+
+```
+$ arrianish > fun add (a, b) -> a + b
+<function add>
+$ arrianish > add(10, 5)
+15
+```
+
+arrianish allows for anonymous function creation, and assigning a variable name to a function, both features demonstrated here:
+
+
+```
+$ arrianish > var new_func = add
+<function add>
+$ arrianish > new_func
+<function add>
+$ arrianish > new_func(10,5)
+15
+
+$ arrianish > fun (a) -> a + 5
+<function <anonymous>>
+$ arrianish > var add_five = fun(a) -> a + 5
+<function <anonymous>>
+$ arrianish > add_five(10)
+15
+```
+
+
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
@@ -197,6 +228,22 @@ runtime error: 'abc' is not defined
 abc
 ^^^
 ```
+
+Traceback showing context of function in program:
+
+```
+$ arrianish > fun div_by_0(a) -> a / 0
+<function div_by_0>
+$ arrianish > div_by_0(5)
+traceback (most recent call last):
+    file <stdin>, line 1, in <program>
+    file <stdin>, line 1, in div_by_0
+runtime error: Division by zero
+
+fun div_by_0(a) -> a / 0
+                       ^
+```
+
 
 ## contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
