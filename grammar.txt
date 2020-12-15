@@ -1,6 +1,6 @@
 # lower priority on top, higher priority expression on bottom
 
-# make a glossary for this (expr, (), ?, *, |)
+# make a glossary for this (expr, (), ? = optional, * = 0 or more, |)
 
 expr            : keywords:var identifier eq expr
                 : comp-expr ((keyword: and|keyword: or) comp-expr)*
@@ -15,10 +15,16 @@ term            : factor ((mul|div) factor)*
 factor          : (plus|minus) factor
                 : power
 
-power           : atom (pow factor)*
+power           : call (pow factor)*
+
+call            : atom (lparen (expr (comma expr)*)? rparen)?
 
 atom            : int|float|identifier
                 : lparen expr rparen
+                : if-expr
+                : for-expr
+                : while-expr
+                : func-def
 
 if-expr         : keyword:if expr keyword:then expr
                  (keyword:elif expr keyword:then expr)*
@@ -28,3 +34,7 @@ for-expr        : keyword:for identifier eq expr keyword:to expr
                  (keyword: step expr)? keyword:then expr
 
 while-expr      : keyword:while expr keyword:then expr
+
+func-def        : keyword:fun identifier?
+                : lparen (identifier (comma identifier)*)? rparen
+                : arrow expr
