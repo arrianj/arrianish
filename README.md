@@ -215,6 +215,39 @@ $ arrianish > greet("arrian", 3)
 "hello, hello, hello, arrian"
 ```
 
+## lists
+
+Lists in arrianish begin and end with square brackets. Elements can be added to lists with the + operator, and elements can be removed from a list with the - operator.
+
+To retrieve an element from a list, use the / operator to return the element at a specific index. arrianish uses zero-based indexing, meaning the first element in a list will be at the index position 0, the next element will be at index position 1, etc.
+
+```
+$ arrianish > [1, 2, 3]    
+[1, 2, 3]   
+$ arrianish > [1, 2, 3] + 4 + 5
+[1, 2, 3, 4, 5]
+$ arrianish > [1, 2, 3, 4] / 2
+3
+```
+In the event of an out-of-bounds index position being called, a runtime error will occur:
+
+```
+$ arrianish > [1, 2, 3, 4] / 99
+traceback (most recent call last):
+    file <stdin>, line 1, in <program>
+runtime error: element at this index could not be retrieved from list because index is out of bounds
+
+[1, 2, 3, 4] / 99
+               ^^
+```
+
+Both while or for loops will return lists:
+
+```
+$ arrianish > for i = 1 to 10 then 2 ^ i
+[2, 4, 8, 16, 32, 64, 128, 256, 512]
+```
+
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
