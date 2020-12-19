@@ -10,7 +10,7 @@ The arrianish scanner will analyze user input, tokenize the input if no errors a
 
 Once the AST is built, the interpreter will visit each node in a top-down, left-to-right order and return the appropriate values and errors as output.
 
-## syntax
+## grammar
 
 Operator precedence is present in arrianish, all expressions follow the order of operations.
 
@@ -28,10 +28,16 @@ term            : factor ((mul|div) factor)*
 factor          : (plus|minus) factor
                 : power
 
-power           : atom (pow factor)*
+power           : call (pow factor)*
 
-atom            : int|float|identifier
+call            : atom (lparen (expr (comma expr)*)? rparen)?
+
+atom            : int|float|string|identifier
                 : lparen expr rparen
+                : if-expr
+                : for-expr
+                : while-expr
+                : func-def
 
 if-expr         : keyword:if expr keyword:then expr
                  (keyword:elif expr keyword:then expr)*
@@ -41,6 +47,10 @@ for-expr        : keyword:for identifier eq expr keyword:to expr
                  (keyword: step expr)? keyword:then expr
 
 while-expr      : keyword:while expr keyword:then expr
+
+func-def        : keyword:fun identifier?
+                : lparen (identifier (comma identifier)*)? rparen
+                : arrow expr
 ```
 
 ## arithmetic 
@@ -66,7 +76,6 @@ variables can be defined with the 'var' keyword:
 $ arrianish > var a = 10
 10
 ```
-
 
 multiple variables can be assigned at once, and will be stored as needed
 
@@ -108,7 +117,6 @@ $ arrianish > 1 != 2
 ```
 
 ## keywords
-
 
 Logical operators supported in arrianish include:
 
@@ -168,7 +176,6 @@ $ arrianish > add(10, 5)
 
 arrianish allows for anonymous function creation, and assigning a variable name to a function, both features demonstrated here:
 
-
 ```
 $ arrianish > var new_func = add
 <function add>
@@ -185,6 +192,28 @@ $ arrianish > add_five(10)
 15
 ```
 
+## strings
+
+Strings in arrianish begin and end with double quotation marks. String concatenation is supported with the + operator, and string multiplication is done with the * operator.
+
+```
+$ arrianish > "hello world"
+"hello world"
+$ arrianish > "hello" + " world"
+"hello world"
+$ arrianish > "alright " * 3 
+"alright alright alright "
+
+```
+
+Strings can be used in functions with no issues, as shown here:
+
+```
+$ arrianish > fun greet(name, emphasization) -> "hello, " * emphasization + name  
+<function greet>
+$ arrianish > greet("arrian", 3) 
+"hello, hello, hello, arrian"
+```
 
 ## exception handling
 
@@ -243,7 +272,6 @@ runtime error: Division by zero
 fun div_by_0(a) -> a / 0
                        ^
 ```
-
 
 ## contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
