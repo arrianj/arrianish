@@ -21,10 +21,13 @@ call            : atom (lparen (expr (comma expr)*)? rparen)?
 
 atom            : int|float|string|identifier
                 : lparen expr rparen
+                : list-expr
                 : if-expr
                 : for-expr
                 : while-expr
                 : func-def
+
+list-expr       : lsqaure (expr (comma expr)*)? rsquare
 
 if-expr         : keyword:if expr keyword:then expr
                  (keyword:elif expr keyword:then expr)*
