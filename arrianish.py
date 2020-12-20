@@ -1205,6 +1205,10 @@ class Number(Value):
     def __repr__(self):
         return str(self.value)
 
+Number.null = Number(0)
+Number.false = Number(0)
+Number.true = Number(1)
+
 class String(Value):
     def __init__(self, value):
         super().__init__
@@ -1588,9 +1592,9 @@ class Interpreter:
 #######################################
 
 global_symbol_table = SymbolTable()
-global_symbol_table.set("null", Number(0))
-global_symbol_table.set("false", Number(0))
-global_symbol_table.set("true", Number(1))
+global_symbol_table.set("null", Number.null)
+global_symbol_table.set("false", Number.false)
+global_symbol_table.set("true", Number.true)
 
 def run(fn, text):
     # generate tokens
