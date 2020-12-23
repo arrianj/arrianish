@@ -248,6 +248,25 @@ $ arrianish > for i = 1 to 10 then 2 ^ i
 [2, 4, 8, 16, 32, 64, 128, 256, 512]
 ```
 
+## built-in functions
+
+arrianish has a range of functions that are pre-built into the language. The current list includes
+
+| function|keyword|definition|
+| :---|:----:|:----: |
+| print| print()| prints output to console|
+| print return| print_ret()| returns output to system|
+| input| input()| saves user input|
+| input integer| input_int()| saves user numeric input|
+| clear| clear()| clears console|
+| is number| is_num()|checks if input is a number|
+| is string| is_str()|checks if input is a string|
+| is list|is_list()|checks if input is a list|
+| is function| is_fun()|checks if input is a function|
+| append| append()| adds element to list|
+| pop| pop()| removes last element from list|
+| extend| extend()| adds elements input list to called upon list|
+
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
