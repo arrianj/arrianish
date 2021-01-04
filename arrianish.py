@@ -120,6 +120,7 @@ tt_lte          = 'lte'
 tt_gte          = 'gte'
 tt_comma        = 'comma'
 tt_arrow        = 'arrow'
+tt_newline      = 'newline'
 tt_eof          = 'eof'
 
 keywords = [
@@ -135,7 +136,8 @@ keywords = [
     'to',
     'step',
     'while',
-    'fun'
+    'fun',
+    'end'
 ]
 
 class Token:
@@ -179,6 +181,9 @@ class Lexer:
 
         while self.current_char != None:
             if self.current_char in ' \t':
+                self.advance()
+            elif self.current_char in ';\n':
+                tokens.append(Token(tt_newline, pos_start=self.pos))
                 self.advance()
             elif self.current_char in digits:
                 tokens.append(self.make_number())
@@ -464,6 +469,7 @@ class ParseResult:
         self.error = None
         self.node = None
         self.advance_count = 0
+        self.to_reverse_count = 0
 
     def register_advancement(self):
         self.advance_count += 1
@@ -472,6 +478,12 @@ class ParseResult:
         self.advance_count += res.advance_count
         if res.error: self.error = res.error
         return res.node
+
+    def try_register(self, res):
+        if res.error:
+            self.to_reverse_count = res.advance_count
+            return None
+        return res.register(res)
 
     def success(self, node):
         self.node = node
@@ -488,18 +500,27 @@ class ParseResult:
 
 class Parser:
     def __init__(self, tokens):
+        # token index begins at -1, so the first advance marks the intial token index at 0
         self.tokens = tokens
         self.tok_idx = -1
         self.advance()
 
-    def advance(self, ):
+    def advance(self):
         self.tok_idx += 1
-        if self.tok_idx < len(self.tokens):
-            self.current_tok = self.tokens[self.tok_idx]
+        self.update_current_tok()
         return self.current_tok
 
+    def reverse(self, amount=1):
+        self.tok_idx -= amount
+        self.update_current_tok()
+        return self.current_tok
+
+    def update_current_tok(self):
+        if self.tok_idx >= 0 and self.tok_idx < len(self.tokens):
+            self.current_tok = self.tokens[self.tok_idx]
+
     def parse(self):
-        res = self.expr()
+        res = self.statements()
         if not res.error and self.current_tok.type != tt_eof:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
@@ -508,6 +529,45 @@ class Parser:
         return res
 
     ###################################
+
+    def statements(self):
+        res = ParseResult()
+        statements = []
+        pos_start = self.current_tok.pos_start.copy()
+
+        while self.current_tok.type == tt_newline:
+            res.register_advancement()
+            self.advance()
+        
+        statement = res.register(self.expr())
+        if res.error: return res
+        statements.append(statement)
+
+        more_statements = True
+
+        while True:
+            newline_count = 0
+            while self.current_tok.type == tt_newline:
+                res.register_advancement()
+                self.advance()
+                newline_count += 1
+            if newline_count == 0:
+                more_statements = False
+
+            if not more_statements: break
+            statement = res.try_register(self.expr())
+            if not statement:
+                self.reverse(res.to_reverse_count)
+                more_statements = False
+                continue
+            statements.append(statement)
+
+        # put each statement into a list node so each statement is evaluated
+        return res.success(ListNode(
+            statements,
+            pos_start,
+            self.current_tok.pos_end.copy()
+        ))
 
     def list_expr(self):
         res = ParseResult()
@@ -555,7 +615,6 @@ class Parser:
             pos_start,
             self.current_tok.pos_end.copy()
         ))
-
 
     def if_expr(self):
         res = ParseResult()
