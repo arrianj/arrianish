@@ -267,6 +267,20 @@ arrianish has a range of functions that are pre-built into the language. The cur
 | pop| pop()| removes last element from list|
 | extend| extend()| adds elements input list to called upon list|
 
+## multi-line support
+
+Semi-colons (;) are used as a new line indicator for arrianish. 
+
+```
+$ arrianish > 1+2; 3-4; 5*6
+[3, -1, 30]
+
+$ arrianish > if 5 == 5 then; print("addition"); print("exists") else print("what is math")
+addition
+exists
+0
+```
+
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
