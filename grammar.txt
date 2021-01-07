@@ -2,10 +2,15 @@
 
 # make a glossary for grammar rule syntax (expr, (), ? == optional, * == 0 or more, + == 1 or more, | == or)
 
-statements      : newline* expr (newline+ expr)* newline*
+statements      : newline* statement (newline+ statement)* newline*
 
-expr            : keywords:var identifier eq expr
-                : comp-expr ((keyword: and|keyword: or) comp-expr)*
+statement       : keyword:return expr?
+                : keyword:continue
+                : keyword:break
+                : expr
+
+expr            : keyword:var identifier eq expr
+                : comp-expr ((keyword:and|keyword:or) comp-expr)*
 
 comp-expr       : not comp-expr
                 : arith-expr ((ee|lt|gt|lte|gte) arith-expr)*
