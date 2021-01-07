@@ -12,11 +12,18 @@ Once the AST is built, the interpreter will visit each node in a top-down, left-
 
 ## grammar
 
-Operator precedence is present in arrianish, all expressions follow the order of operations.
+Operator precedence is present in arrianish, all expressions follow the order of operations. 
 
 ```
-expr            : keywords:var identifier eq expr
-                : comp-expr ((keyword: and|keyword: or) comp-expr)*
+statements      : newline* statement (newline+ statement)* newline*
+
+statement       : keyword:return expr?
+                : keyword:continue
+                : keyword:break
+                : expr
+
+expr            : keyword:var identifier eq expr
+                : comp-expr ((keyword:and|keyword:or) comp-expr)*
 
 comp-expr       : not comp-expr
                 : arith-expr ((ee|lt|gt|lte|gte) arith-expr)*
@@ -34,23 +41,39 @@ call            : atom (lparen (expr (comma expr)*)? rparen)?
 
 atom            : int|float|string|identifier
                 : lparen expr rparen
+                : list-expr
                 : if-expr
                 : for-expr
                 : while-expr
                 : func-def
 
-if-expr         : keyword:if expr keyword:then expr
-                 (keyword:elif expr keyword:then expr)*
-                 (keyword:else expr)?
+list-expr       : lsqaure (expr (comma expr)*)? rsquare
+
+if-expr         : keyword:if expr keyword:then
+                  (expr if-expr-b|if-expr-c?)
+                | (newline statements keyword:end|if-expr-b|if-expr-c)
+
+if-expr-b       : keyword:elif expr keyword:then
+                  (expr if-expr-b|if-expr-c?)
+                | (newline statements keyword:end|if-expr-b|if-expr-c)
+
+if-expr-c       : keyword:else
+                  expr
+                | (newline statements keyword:end)
 
 for-expr        : keyword:for identifier eq expr keyword:to expr
-                 (keyword: step expr)? keyword:then expr
+                 (keyword: step expr)? keyword:then 
+                 expr
+                | (newline statements keyword:end)
 
-while-expr      : keyword:while expr keyword:then expr
+while-expr      : keyword:while expr keyword:then
+                 expr
+                | (newline statements keyword:end)
 
 func-def        : keyword:fun identifier?
-                : lparen (identifier (comma identifier)*)? rparen
-                : arrow expr
+                  lparen (identifier (comma identifier)*)? rparen
+                  (arrow expr)
+                | (newline statements keyword:end)
 ```
 
 ## arithmetic 
