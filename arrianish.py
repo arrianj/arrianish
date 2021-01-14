@@ -1247,7 +1247,7 @@ class RTResult:
         self.loop_should_break = False
 
     def register(self, res):
-        if res.error: self.error = res.error
+        self.error = res.error
         self.func_return_value = res.func_return_value
         self.loop_should_continue = res.loop_should_continue
         self.loop_should_break = res.loop_should_break
@@ -1257,12 +1257,12 @@ class RTResult:
         self.reset()
         self.value = value
         return self
-    
+
     def success_return(self, value):
         self.reset()
         self.func_return_value = value
         return self
-
+  
     def success_continue(self):
         self.reset()
         self.loop_should_continue = True
@@ -1279,6 +1279,7 @@ class RTResult:
         return self
 
     def should_return(self):
+        # this will allow you to continue and break outside the current function
         return (
             self.error or
             self.func_return_value or
@@ -1464,7 +1465,7 @@ class Number(Value):
 
     def is_true(self):
         return self.value != 0
-    
+
     def __repr__(self):
         return str(self.value)
 
@@ -2047,7 +2048,7 @@ class Interpreter:
         func_name = node.var_name_tok.value if node.var_name_tok else None
         body_node = node.body_node
         arg_names = [arg_name.value for arg_name in node.arg_name_toks]
-        func_value = Function(func_name, body_node, arg_names, node.should_return_null).set_context(context).set_pos(node.pos_start, node.pos_end)
+        func_value = Function(func_name, body_node, arg_names, node.should_auto_return).set_context(context).set_pos(node.pos_start, node.pos_end)
 
         if node.var_name_tok:
             context.symbol_table.set(func_name, func_value)
@@ -2070,6 +2071,23 @@ class Interpreter:
         if res.should_return(): return res
         return_value = return_value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
         return res.success(return_value)
+
+    def visit_ReturnNode(self, node, context):
+        res = RTResult()
+
+        if node.node_to_return:
+            value = res.register(self.visit(node.node_to_return, context))
+            if res.should_return(): return res
+        else:
+            value = Number.null
+    
+        return res.success_return(value)
+
+    def visit_ContinueNode(self, node, context):
+        return RTResult().success_continue()
+
+    def visit_BreakNode(self, node, context):
+        return RTResult().success_break()
 
 #######################################
 #               run
