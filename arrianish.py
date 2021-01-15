@@ -546,7 +546,7 @@ class Parser:
         if not res.error and self.current_tok.type != tt_eof:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "expected '+', '-', '*', '/', '^', '==', '!=', '<', '>', <=', '>=', 'and' or 'or'"
+                "token cannot appear after previous tokens"
             ))
         return res
 
@@ -706,7 +706,7 @@ class Parser:
                         "expected 'end'"
                     ))
             else:
-                expr = res.register(self.expr())
+                expr = res.register(self.statement())
                 if res.error: return res
                 else_case = (expr, False)
 
@@ -1653,7 +1653,6 @@ class BuiltInFunction(BaseFunction):
 
         return_value = res.register(method(exec_ctx))
         if res.should_return(): return res
-
         return res.success(return_value)
 
     def no_visit_method(self, node, context):
@@ -2023,7 +2022,6 @@ class Interpreter:
         while True:
             condition = res.register(self.visit(node.condition_node, context))
             if res.should_return(): return res
-            
             if not condition.is_true(): break
 
             value = res.register(self.visit(node.body_node, context))
