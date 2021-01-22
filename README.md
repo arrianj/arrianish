@@ -304,6 +304,38 @@ exists
 0
 ```
 
+## return, break, continue
+
+The return keyword, when used inside a function, will both end the function call and returns the value of the expression inside the function.
+
+Using the break keyword can be used inside a loop will allow you to exit the loop, whereas continue will allow a loop to skip to the next iterator. 
+
+```
+$ fun test(); var foo = 5; return foo; end
+$ test()
+> 5
+
+
+$ var a = []
+> []
+
+$ for i = 0 to 10 then; if i == 4 then continue elif i == 8 then break; var a = a + i; end
+>0
+
+$ a
+>[0, 1, 2, 3, 5 ,6 ,7 ]
+```
+
+```
+$ arrianish > 1+2; 3-4; 5*6
+[3, -1, 30]
+
+$ arrianish > if 5 == 5 then; print("addition"); print("exists") else print("what is math")
+addition
+exists
+0
+```
+
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
@@ -356,7 +388,7 @@ $ arrianish > div_by_0(5)
 traceback (most recent call last):
     file <stdin>, line 1, in <program>
     file <stdin>, line 1, in div_by_0
-runtime error: Division by zero
+runtime error: division by zero
 
 fun div_by_0(a) -> a / 0
                        ^
