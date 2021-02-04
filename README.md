@@ -327,16 +327,6 @@ $ a
 >[0, 1, 2, 3, 5 ,6 ,7]
 ```
 
-```
-$ arrianish > 1+2; 3-4; 5*6
-[3, -1, 30]
-
-$ arrianish > if 5 == 5 then; print("addition"); print("exists") else print("what is math")
-addition
-exists
-0
-```
-
 ## exception handling
 
 arrianish has fully functioning exception handling, with traceback functionality to provide context in the event of exceptions arising, such as division by zero runtime errors, and properly catching illegal or invalid syntax entries.
