@@ -314,8 +314,9 @@ Using the break keyword can be used inside a loop will allow you to exit the loo
 $ fun test(); var foo = 5; return foo; end
 $ test()
 > 5
+```
 
-
+```
 $ var a = []
 > []
 
@@ -323,7 +324,7 @@ $ for i = 0 to 10 then; if i == 4 then continue elif i == 8 then break; var a = 
 >0
 
 $ a
->[0, 1, 2, 3, 5 ,6 ,7 ]
+>[0, 1, 2, 3, 5 ,6 ,7]
 ```
 
 ```
