@@ -10,6 +10,42 @@ The arrianish scanner will analyze user input, tokenize the input if no errors a
 
 Once the AST is built, the interpreter will visit each node in a top-down, left-to-right order and return the appropriate values and errors as output.
 
+## running arrianish
+
+arrianish can be written and run either via a command line interface, or by writing code to a file and running the file. Either way, both Python and arrianish will need to be installed for the shell to launch.
+
+1) Install Python 3.6 or higher from [here](https://www.python.org/downloads/) (arrianish uses f-strings, and will not work on versions of Python prior to 3.6)
+
+
+2) Download this repo
+```
+$ git clone https://github.com/arrianj/arrianish.git
+```
+
+3) Then navigate in your command line to the arrianish folder, and launch the shell with
+
+```
+$ python3 shell.py
+```
+
+Refer [here](https://github.com/arrianj/arrianish#multi-line-support) on how to write multi-line code in the CLI, but for larger scripts, saving your code to a file and running the file will be a better course of action.
+
+Place your scripts in the arrianish directory on your computer. arrianish scripts can be written in a generic text file format. The correct usage would be to save the file with a .arrian extension, but files saved with the .txt extension will run as well.
+
+Once the arrianish shell is running, the run command can be used to execute the code. To test the language, write a hello world program by writing the following line to a file, and saving it as hello.arrian
+
+```
+print("hello world")
+```
+
+and to run it from the arrianish shell:
+
+```
+$ arrianish > run("hello.arrian")
+hello arrianish user
+0
+```
+
 ## grammar
 
 Operator precedence is present in arrianish, all expressions follow the order of operations. 
@@ -311,19 +347,19 @@ The return keyword, when used inside a function, will both end the function call
 Using the break keyword can be used inside a loop will allow you to exit the loop, whereas continue will allow a loop to skip to the next iterator. 
 
 ```
-$ fun test(); var foo = 5; return foo; end
-$ test()
+$ arrianish > fun test(); var foo = 5; return foo; end
+$ arrianish > test()
 > 5
 ```
 
 ```
-$ var a = []
+$ arrianish > var a = []
 > []
 
-$ for i = 0 to 10 then; if i == 4 then continue elif i == 8 then break; var a = a + i; end
+$ arrianish > for i = 0 to 10 then; if i == 4 then continue elif i == 8 then break; var a = a + i; end
 >0
 
-$ a
+$ arrianish > a
 >[0, 1, 2, 3, 5 ,6 ,7]
 ```
 
