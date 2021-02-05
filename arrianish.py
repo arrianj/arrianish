@@ -553,7 +553,7 @@ class Parser:
         if not res.error and self.current_tok.type != tt_eof:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "token cannot appear after previous tokens"
+                'token cannot appear after previous tokens'
             ))
         return res
 
@@ -638,7 +638,7 @@ class Parser:
             if self.current_tok.type != tt_identifier:
                 return res.failure(InvalidSyntaxError(
                     self.current_tok.pos_start, self.current_tok.pos_end,
-                    "expected identifier"
+                    'expected identifier'
                 ))
 
             var_name = self.current_tok
@@ -1572,7 +1572,7 @@ class List(Value):
 class BaseFunction(Value):
     def __init__(self, name):
         super().__init__()
-        self.name = name or "<anonymous>"
+        self.name = name or '<anonymous>'
 
     def generate_new_context(self):
         new_context = Context(self.name, self.context, self.pos_start)
@@ -1585,14 +1585,14 @@ class BaseFunction(Value):
         if len(args) > len(arg_names):
             return res.failure(RTError(
                 self.pos_start, self.pos_end,
-                f"{len(args) - len(arg_names)} too many args passed into {self}",
+                f'{len(args) - len(arg_names)} too many args passed into {self}',
                 self.context
             ))
         
         if len(args) < len(arg_names):
             return res.failure(RTError(
                 self.pos_start, self.pos_end,
-                f"{len(arg_names) - len(args)} too few args passed into {self}",
+                f'{len(arg_names) - len(args)} too few args passed into {self}',
                 self.context
             ))
 
@@ -1640,7 +1640,7 @@ class Function(BaseFunction):
         return copy
 
     def __repr__(self):
-        return f"<function {self.name}>"
+        return f'<function {self.name}>'
 
 class BuiltInFunction(BaseFunction):
     def __init__(self, name):
@@ -1670,7 +1670,7 @@ class BuiltInFunction(BaseFunction):
         return copy
 
     def __repr__(self):
-        return f"<built-in function {self.name}>"
+        return f'<built-in function {self.name}>'
 
     #####################################
 
@@ -1705,55 +1705,55 @@ class BuiltInFunction(BaseFunction):
     execute_clear.arg_names = []
 
     def execute_is_number(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
+        is_number = isinstance(exec_ctx.symbol_table.get('value'), Number)
         return RTResult().success(Number.true if is_number else Number.false)
-    execute_is_number.arg_names = ["value"]
+    execute_is_number.arg_names = ['value']
 
     def execute_is_string(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), String)
+        is_number = isinstance(exec_ctx.symbol_table.get('value'), String)
         return RTResult().success(Number.true if is_number else Number.false)
-    execute_is_string.arg_names = ["value"]
+    execute_is_string.arg_names = ['value']
 
     def execute_is_list(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), List)
+        is_number = isinstance(exec_ctx.symbol_table.get('value'), List)
         return RTResult().success(Number.true if is_number else Number.false)
-    execute_is_list.arg_names = ["value"]
+    execute_is_list.arg_names = ['value']
 
     def execute_is_function(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), BaseFunction)
+        is_number = isinstance(exec_ctx.symbol_table.get('value'), BaseFunction)
         return RTResult().success(Number.true if is_number else Number.false)
-    execute_is_function.arg_names = ["value"]
+    execute_is_function.arg_names = ['value']
 
     def execute_append(self, exec_ctx):
-        list_ = exec_ctx.symbol_table.get("list")
-        value = exec_ctx.symbol_table.get("value")
+        list_ = exec_ctx.symbol_table.get('list')
+        value = exec_ctx.symbol_table.get('value')
 
         if not isinstance(list_, List):
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                "first argument must be list",
+                'first argument must be list',
                 exec_ctx
             ))
 
         list_.elements.append(value)
         return RTResult().success(Number.null)
-    execute_append.arg_names = ["list", "value"]
+    execute_append.arg_names = ['list', 'value']
 
     def execute_pop(self, exec_ctx):
-        list_ = exec_ctx.symbol_table.get("list")
-        index = exec_ctx.symbol_table.get("index")
+        list_ = exec_ctx.symbol_table.get('list')
+        index = exec_ctx.symbol_table.get('index')
 
         if not isinstance(list_, List):
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                "first argument must be list",
+                'first argument must be list',
                 exec_ctx
             ))
 
         if not isinstance(index, Number):
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                "second argument must be number",
+                'second argument must be number',
                 exec_ctx
             ))
 
@@ -1766,42 +1766,79 @@ class BuiltInFunction(BaseFunction):
                 exec_ctx
             ))
         return RTResult().success(element)
-    execute_pop.arg_names = ["list", "index"]
+    execute_pop.arg_names = ['list', 'index']
 
     def execute_extend(self, exec_ctx):
-        listA = exec_ctx.symbol_table.get("listA")
-        listB = exec_ctx.symbol_table.get("listB")
+        listA = exec_ctx.symbol_table.get('listA')
+        listB = exec_ctx.symbol_table.get('listB')
 
         if not isinstance(listA, List):
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                "first argument must be list",
+                'first argument must be list',
                 exec_ctx
             ))
 
         if not isinstance(listB, List):
             return RTResult().failure(RTError(
                 self.pos_start, self.pos_end,
-                "second argument must be list",
+                'second argument must be list',
                 exec_ctx
             ))
 
         listA.elements.extend(listB.elements)
         return RTResult().success(Number.null)
-    execute_extend.arg_names = ["listA", "listB"]
+    execute_extend.arg_names = ['listA', 'listB']
 
-BuiltInFunction.print       = BuiltInFunction("print")
-BuiltInFunction.print_ret   = BuiltInFunction("print_ret")
-BuiltInFunction.input       = BuiltInFunction("input")
-BuiltInFunction.input_int   = BuiltInFunction("input_int")
-BuiltInFunction.clear       = BuiltInFunction("clear")
-BuiltInFunction.is_number   = BuiltInFunction("is_number")
-BuiltInFunction.is_string   = BuiltInFunction("is_string")
-BuiltInFunction.is_list     = BuiltInFunction("is_list")
-BuiltInFunction.is_function = BuiltInFunction("is_function")
-BuiltInFunction.append      = BuiltInFunction("append")
-BuiltInFunction.pop         = BuiltInFunction("pop")
-BuiltInFunction.extend      = BuiltInFunction("extend")
+    def execute_run(self, exec_ctx):
+        filename = exec_ctx.symbol_table.get('filename')
+
+        if not isinstance(filename, String):
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                'argument must be string',
+                exec_ctx
+            ))
+
+        filename = filename.value
+
+        try:
+            with open(filename, 'r') as f:
+                script =f.read()
+        except Exception as e:
+            # convert exception to string and include in error message if runtime error is raised
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f"failed to load script \"{filename}\"\n" + str(e),
+                exec_ctx
+            ))
+
+        _, error = run(filename, script)
+
+        if error:
+            return RTResult().failure(RTError(
+                self.pos_start, self.pos_end,
+                f"failed to finish executing script \"{filename}\"\n" +
+                error.as_string(),
+                exec_ctx
+            ))
+
+        return RTResult().success(Number.null)
+
+    execute_run.arg_names = ['filename']
+
+BuiltInFunction.print       = BuiltInFunction('print')
+BuiltInFunction.print_ret   = BuiltInFunction('print_ret')
+BuiltInFunction.input       = BuiltInFunction('input')
+BuiltInFunction.input_int   = BuiltInFunction('input_int')
+BuiltInFunction.clear       = BuiltInFunction('clear')
+BuiltInFunction.is_number   = BuiltInFunction('is_number')
+BuiltInFunction.is_string   = BuiltInFunction('is_string')
+BuiltInFunction.is_list     = BuiltInFunction('is_list')
+BuiltInFunction.is_function = BuiltInFunction('is_function')
+BuiltInFunction.append      = BuiltInFunction('append')
+BuiltInFunction.pop         = BuiltInFunction('pop')
+BuiltInFunction.extend      = BuiltInFunction('extend')
 
 #######################################
 #              context
@@ -2094,23 +2131,23 @@ class Interpreter:
 #######################################
 
 global_symbol_table = SymbolTable()
-global_symbol_table.set("null", Number.null)
-global_symbol_table.set("false", Number.false)
-global_symbol_table.set("true", Number.true)
-global_symbol_table.set("math_pi", Number.math_PI)
-global_symbol_table.set("print", BuiltInFunction.print)
-global_symbol_table.set("print_ret", BuiltInFunction.print_ret)
-global_symbol_table.set("input", BuiltInFunction.input)
-global_symbol_table.set("input_int", BuiltInFunction.input_int)
-global_symbol_table.set("clear", BuiltInFunction.clear)
-global_symbol_table.set("cls", BuiltInFunction.clear)
-global_symbol_table.set("is_num", BuiltInFunction.is_number)
-global_symbol_table.set("is_str", BuiltInFunction.is_string)
-global_symbol_table.set("is_list", BuiltInFunction.is_list)
-global_symbol_table.set("is_fun", BuiltInFunction.is_function)
-global_symbol_table.set("append", BuiltInFunction.append)
-global_symbol_table.set("pop", BuiltInFunction.pop)
-global_symbol_table.set("extend", BuiltInFunction.extend)
+global_symbol_table.set('null', Number.null)
+global_symbol_table.set('false', Number.false)
+global_symbol_table.set('true', Number.true)
+global_symbol_table.set('math_pi', Number.math_PI)
+global_symbol_table.set('print', BuiltInFunction.print)
+global_symbol_table.set('print_ret', BuiltInFunction.print_ret)
+global_symbol_table.set('input', BuiltInFunction.input)
+global_symbol_table.set('input_int', BuiltInFunction.input_int)
+global_symbol_table.set('clear', BuiltInFunction.clear)
+global_symbol_table.set('cls', BuiltInFunction.clear)
+global_symbol_table.set('is_num', BuiltInFunction.is_number)
+global_symbol_table.set('is_str', BuiltInFunction.is_string)
+global_symbol_table.set('is_list', BuiltInFunction.is_list)
+global_symbol_table.set('is_fun', BuiltInFunction.is_function)
+global_symbol_table.set('append', BuiltInFunction.append)
+global_symbol_table.set('pop', BuiltInFunction.pop)
+global_symbol_table.set('extend', BuiltInFunction.extend)
 
 def run(fn, text):
         # generate tokens
