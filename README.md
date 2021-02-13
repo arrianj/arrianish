@@ -326,6 +326,10 @@ arrianish has a range of functions that are pre-built into the language. The cur
 | pop| pop()| removes last element from list|
 | extend| extend()| adds elements input list to called upon list|
 
+## comments
+
+Comments are very simple to use in arrianish. Use the # symbol at the beginning of a new line to indicate to the compiler that the entire line should be considered a comment, and should be ignored. No tokens will be read by compiler until the parser finds a new line that does not start with #
+
 ## multi-line support
 
 Semi-colons (;) are used as a new line indicator for arrianish. 
