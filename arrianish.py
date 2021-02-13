@@ -90,6 +90,7 @@ class Position:
 
                 return self
 
+        # useful for keeping track of values for comparison/reference
         def copy(self):
                 return Position(self.idx, self.ln, self.col, self.fn, self.ftxt)
 
@@ -107,17 +108,17 @@ tt_minus        = 'minus'
 tt_mul          = 'mul'
 tt_div          = 'div'
 tt_pow          = 'pow'
-tt_eq           = 'EQ'
+tt_eq           = 'eq'
 tt_lparen       = 'lparen'
 tt_rparen       = 'rparen'
 tt_lsquare      = 'lsquare'
 tt_rsquare      = 'rsquare'
-tt_ee           = 'ee'
-tt_ne           = 'ne'
-tt_lt           = 'lt'
-tt_gt           = 'gt'
-tt_lte          = 'lte'
-tt_gte          = 'gte'
+tt_ee           = 'ee' # equal to
+tt_ne           = 'ne' # not equal to
+tt_lt           = 'lt' # less than
+tt_gt           = 'gt' # greater than
+tt_lte          = 'lte' # less than or equal to
+tt_gte          = 'gte' # greater than or equal to
 tt_comma        = 'comma'
 tt_arrow        = 'arrow'
 tt_newline      = 'newline'
@@ -1225,6 +1226,7 @@ class Parser:
 
     ###################################
 
+    # binary operations
     def bin_op(self, func_a, ops, func_b=None):
         if func_b == None:
             func_b = func_a
@@ -1484,6 +1486,7 @@ class Number(Value):
     def __repr__(self):
         return str(self.value)
 
+# numeric constants & assigning truthy and falsy values
 Number.null = Number(0)
 Number.false = Number(0)
 Number.true = Number(1)
