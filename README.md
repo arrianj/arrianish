@@ -226,9 +226,14 @@ While loops are also supported in arrianish. For an example on how not to use th
 $ arrianish > var i = 0
 0
 $ arrianish > while i == 0  then print("look at me, i am a loop with no exit condition!")
-# What happens now those printed lines keep showing up until you interrupt the shell, or if using an IDE command line interface, your computer loses all available RAM.
-# This makes great practice for learning how to kill your shell. Pro-tip, CTRL-C usually gets the job done. This is arrianish, not Vim.
+look at me, i am a loop with no exit condition
+look at me, i am a loop with no exit condition
+look at me, i am a loop with no exit condition
+look at me, i am a loop with no exit condition
+look at me, i am a loop with no exit condition
 ```
+What happens next is that line will keep printing to the console up until you interrupt the shell, or if using an IDE's command line interface, your computer loses all available RAM.This makes great practice for learning how to kill your shell. Pro-tip, CTRL-C usually gets the job done. This is arrianish, not Vim.
+
 ## functions
 
 Functions in arrianish are defined with the 'fun' keyword, which is a good reminder of how little fun I had when debugging the functionality. 
