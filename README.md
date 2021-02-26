@@ -232,7 +232,7 @@ look at me, i am a loop with no exit condition
 look at me, i am a loop with no exit condition
 look at me, i am a loop with no exit condition
 ```
-What happens next is that line will keep printing to the console up until you interrupt the shell, or if using an IDE's command line interface, your computer loses all available RAM.This makes great practice for learning how to kill your shell. Pro-tip, CTRL-C usually gets the job done. This is arrianish, not Vim.
+What happens next is that the line will keep printing to the console until you interrupt the shell, or if using an IDE's command line interface, your computer loses all available RAM. This makes great practice for learning how to kill your shell. Pro-tip, CTRL-C usually gets the job done. This is arrianish, not Vim.
 
 ## functions
 
