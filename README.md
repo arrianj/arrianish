@@ -220,8 +220,15 @@ $ arrianish > for i = 5 to 0 step -1 then var result = result * i
 $ arrianish > result
 600
 ```
-While loops are currently supported, but as there is no print function, the output is not currently any way for me to show an example in the command line. I will update this in the readme when a print feature is supported
+While loops are also supported in arrianish. For an example on how not to use them, refer to this command line entry below:
 
+```
+$ arrianish > var i = 0
+0
+$ arrianish > while i == 0  then print("look at me, i am a loop with no exit condition!")
+# What happens now those printed lines keep showing up until you interrupt the shell, or if using an IDE command line interface, your computer loses all available RAM.
+# This makes great practice for learning how to kill your shell. Pro-tip, CTRL-C usually gets the job done. This is arrianish, not Vim.
+```
 ## functions
 
 Functions in arrianish are defined with the 'fun' keyword, which is a good reminder of how little fun I had when debugging the functionality. 
