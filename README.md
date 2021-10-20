@@ -7,7 +7,7 @@ arrianish is built on a recursive descent parser, written with the goal of learn
 ## compiler
 
 [This article, 'A crash course in compilers' ](https://increment.com/programming-languages/crash-course-in-compilers/ )by 
-Ramsey Nasser is an excellent resource in a briefer on compiler theory, but to boil down how arrianish works:
+Ramsey Nasser is an excellent resource compiler theory, but to boil down how arrianish works:
 
 The scanner will analyze the code input, tokenize the input if no errors are detected, and pass the tokens onto the parser. The parser reads the tokens, and if no errors are found at this stage, generates an abstract syntax tree of nodes for the interpreter to have an order of operations.
 
